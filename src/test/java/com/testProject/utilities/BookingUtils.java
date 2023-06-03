@@ -4,13 +4,9 @@ import com.github.javafaker.Faker;
 import com.testProject.pojo.Booking;
 import com.testProject.pojo.Bookingdates;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
 
 import java.util.List;
-import java.util.Map;
-
 import static io.restassured.RestAssured.given;
 
 public class BookingUtils {
@@ -43,17 +39,15 @@ public class BookingUtils {
         return "token=" + token;
     }
 
-    public static List<String> getBookingIds() {
-        JsonPath jsonPath = given().accept(ContentType.JSON).when().get(Environment.BASE_URI + "/booking")
-                .then().statusCode(HttpStatus.SC_OK).extract().jsonPath();
-        return jsonPath.getList("bookingid");
+    public static List<Integer> getBookingIds() {
+        return given().accept(ContentType.JSON).when().get(Environment.BASE_URI + "/booking")
+                .then().statusCode(HttpStatus.SC_OK).log().all().extract().jsonPath().getList("bookingid");
     }
 
-    public static Booking getBookingById(int id) {
-        Booking getBooking = given().pathParam("id", id)
+    public static Booking getBookingById(int id, int statusCode) {
+        return given().pathParam("id", id)
                 .when().get(Environment.BASE_URI + "/booking/{id}").then()
-                .statusCode(HttpStatus.SC_OK).and().extract().as(Booking.class);
-        return getBooking;
+                .statusCode(statusCode).and().extract().as(Booking.class);
     }
 
     public static Integer createBooking(Booking body) {
@@ -70,9 +64,9 @@ public class BookingUtils {
                 .then().statusCode(HttpStatus.SC_OK).extract().as(Booking.class);
     }
 
-    public static Booking partialUpdate(String name, String lastName, int id) {
+    public static Booking partialUpdate(String firstName, String lastName, int id) {
         String body = "{\n" +
-                "    \"firstname\" : \"" + name + "\",\n" +
+                "    \"firstname\" : \"" + firstName + "\",\n" +
                 "    \"lastname\" : \"" + lastName + "\"\n" +
                 "}";
 
@@ -83,10 +77,9 @@ public class BookingUtils {
                 .then().statusCode(HttpStatus.SC_OK).extract().as(Booking.class);
     }
 
-    public static String deleteBooking(int id) {
+    public static void deleteBooking(int id) {
         given().header("Cookie", BookingUtils.getToken()).and().pathParam("id", id)
                 .when().delete(Environment.BASE_URI + "/booking/{id}").then().statusCode(HttpStatus.SC_CREATED);
-        return "Your Booking was deleted";
     }
 
 }
