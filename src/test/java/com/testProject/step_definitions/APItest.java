@@ -19,14 +19,14 @@ public class APItest {
     @DisplayName("Get booking id's")
     @Test
     public void test2() {
-        System.out.println(BookingUtils.getBookingIds());
+        BookingUtils.getBookingIds();
     }
 
     @DisplayName("Get book by id")
     @Test
     public void test3() {
 
-        System.out.println(BookingUtils.getBookingById(603));
+        System.out.println(BookingUtils.getBookingById(6,200));
     }
 
     @DisplayName("Create Booking")
@@ -51,7 +51,7 @@ public class APItest {
     @DisplayName("Booking - DeleteBooking")
     @Test
     public void test7() {
-        System.out.println(BookingUtils.deleteBooking(2538));
+        BookingUtils.deleteBooking(1717);
     }
 
 }
