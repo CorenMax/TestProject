@@ -44,10 +44,10 @@ public class BookingUtils {
                 .then().statusCode(HttpStatus.SC_OK).log().all().extract().jsonPath().getList("bookingid");
     }
 
-    public static Booking getBookingById(int id, int statusCode) {
+    public static Booking getBookingById(int id) {
         return given().pathParam("id", id)
                 .when().get(Environment.BASE_URI + "/booking/{id}").then()
-                .statusCode(statusCode).and().extract().as(Booking.class);
+                .statusCode(HttpStatus.SC_OK).and().extract().as(Booking.class);
     }
 
     public static Integer createBooking(Booking body) {

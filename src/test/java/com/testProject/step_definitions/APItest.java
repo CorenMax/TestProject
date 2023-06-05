@@ -26,7 +26,7 @@ public class APItest {
     @Test
     public void test3() {
 
-        System.out.println(BookingUtils.getBookingById(6,200));
+        System.out.println(BookingUtils.getBookingById(6));
     }
 
     @DisplayName("Create Booking")
